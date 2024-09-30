@@ -18,5 +18,5 @@ RUN sed -i 's/#AutomaticUpdatePolicy.*/AutomaticUpdatePolicy=stage/' /etc/rpm-os
     rpm-ostree install intel-media-driver libva-intel-driver && \
     rpm-ostree install zsh kitty neovim && \
     rpm-ostree install virt-install qemu-kvm libvirt-daemon-config-network libvirt-daemon-kvm virt-manager && \
-    rpm-ostree install steam && \
+    rpm-ostree install steam gamescope mangohud && \
     rpm-ostree cleanup -m && ostree container commit
