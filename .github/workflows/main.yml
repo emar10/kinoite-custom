@@ -1,0 +1,41 @@
+name: Build and publish OCI image
+on:
+  schedule:
+    - cron: '35 22 * * *'
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/*.yml
+      - Containerfile
+  workflow_dispatch:
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build with Buildah
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: kinoite-custom
+          tags: ${{ github.sha }} 40 latest
+          containerfiles: ./Containerfile
+
+      - name: Login to GHCR
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: ghcr.io/emar10
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push image to GHCR
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build.outputs.image }}
+          tags: ${{ steps.build.outputs.tags }}
+          registry: ghcr.io/emar10
+      
