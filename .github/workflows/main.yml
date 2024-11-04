@@ -23,7 +23,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           image: kinoite-custom
-          tags: ${{ github.sha }} 40 latest
+          tags: ${{ github.sha }} 41 latest
           containerfiles: ./Containerfile
 
       - name: Login to GHCR
